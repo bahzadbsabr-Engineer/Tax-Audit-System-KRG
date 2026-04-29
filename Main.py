@@ -1046,8 +1046,8 @@ def render_worklist(sid,pending_display,df,headers,col_map,ws_title,col_binder,c
     render_paginated_table(pending_display,page_key="page_worklist")
     st.markdown(f"<div class='section-title'>{t('select_case')}</div>",unsafe_allow_html=True)
     display_label_col=(col_company or col_binder or next((h for h in headers if h not in SYSTEM_COLS),"Row"))
-    opts=["-"]+[f"Row {idx}{_ROW_SEP}{str(row.get(display_label_col,''))[:40]}{_ROW_SEP}{str(row.get(COL_DATE,''))[:10]}" for idx,row in pending_display.iterrows()]
-    row_sel=st.selectbox("",opts,key="row_sel",label_visibility="collapsed")
+        opts=["-"]+[f"Row {idx} | {str(row.get(display_label_col,''))[:40]} | FY: {row.get('السنة المالية', '')} | {str(row.get(COL_DATE,''))[:10]}" for idx,row in pending_display.iterrows()]
+        row_sel=st.selectbox("",opts,key="row_sel",label_visibility="collapsed")
     if row_sel=="-":
         if st.session_state.get("review_mode"): _clear_review_state()
         return
