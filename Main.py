@@ -1047,23 +1047,10 @@ def render_worklist(sid,pending_display,df,headers,col_map,ws_title,col_binder,c
     st.markdown(f"<div class='section-title'>{t('select_case')}</div>",unsafe_allow_html=True)
     display_label_col=(col_company or col_binder or next((h for h in headers if h not in SYSTEM_COLS),"Row"))
         
-        # گەڕان بۆ ستوونی ساڵی دارایی بە شێوەی داینامیکی
         fy_keywords = ["fiscal year", "السنة المالية", "سنة مالية", "سنة التقدير", "ساڵی دارایی", "year", "سنة"]
         col_fy = next((h for h in headers if any(k in str(h).lower() for k in fy_keywords)), None)
         
         opts = ["-"]
-        for idx, row in pending_display.iterrows():
-            lbl = f"Row {idx}{_ROW_SEP}{str(row.get(display_label_col,''))[:40]}"
-            
-            # ئەگەر ستوونەکە هەبوو و بەتاڵ نەبوو، ساڵەکە زیاد بکە
-            fy_val = str(row.get(col_fy, "")).strip() if col_fy else ""
-            if fy_val:
-                lbl += f"{_ROW_SEP}FY: {fy_val}"
-                
-            lbl += f"{_ROW_SEP}{str(row.get(COL_DATE,''))[:10]}"
-            opts.append(lbl)
-            
-        row_sel=st.selectbox("",opts,key="row_sel",label_visibility="collapsed")
     if row_sel=="-":
         if st.session_state.get("review_mode"): _clear_review_state()
         return
