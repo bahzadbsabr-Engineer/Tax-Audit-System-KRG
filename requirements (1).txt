@@ -1,0 +1,9 @@
+streamlit
+gspread
+oauth2client
+pandas
+plotly
+pytz
+tenacity
+extra-streamlit-components
+openpyxl
