@@ -1047,7 +1047,19 @@ def render_worklist(sid,pending_display,df,headers,col_map,ws_title,col_binder,c
     st.markdown(f"<div class='section-title'>{t('select_case')}</div>",unsafe_allow_html=True)
     
     display_label_col = (col_company or col_binder or next((h for h in headers if h not in SYSTEM_COLS), "Row"))
-    opts = ["-"] + [f"Row {idx}{_ROW_SEP}{str(row.get(display_label_col,''))[:40]}{_ROW_SEP}FY: {row.get('Fiscal Year', '')}{_ROW_SEP}{str(row.get(COL_DATE,''))[:10]}" for idx, row in pending_display.iterrows()]
+    col_fy = "السنة المالية / ساڵی دارایی (ساڵ) / Fiscal Year"
+    if col_fy not in pending_display.columns: 
+        col_fy = next((c for c in pending_display.columns if 'fiscal' in str(c).lower()), col_fy)
+        
+    opts = ["-"]
+    for idx, row in pending_display.iterrows():
+        lbl = f"Row {idx}{_ROW_SEP}{str(row.get(display_label_col,''))[:40]}"
+        fy_val = str(row.get(col_fy, '')).replace('nan', '').replace('None', '').strip()
+        if fy_val.endswith('.0'): fy_val = fy_val[:-2]
+        if fy_val: lbl += f"{_ROW_SEP}FY: {fy_val}"
+        lbl += f"{_ROW_SEP}{str(row.get(COL_DATE,''))[:10]}"
+        opts.append(lbl)
+        
     row_sel = st.selectbox("", opts, key="row_sel", label_visibility="collapsed")
     
     if row_sel=="-":
