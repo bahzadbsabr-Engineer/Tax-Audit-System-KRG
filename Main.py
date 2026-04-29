@@ -55,7 +55,7 @@ for _k, _v in _DEFAULTS.items():
 
 # 3. CONSTANTS
 PROJECTS = {}
-MASTER_USERS_ID = "1l7zKNYKzlHL7xSBskeqpk9PAcXi8tKbE2uPxisPjSa8"
+MASTER_USERS_ID = st.secrets["master_sheet_id"]
 SYSTEM_SHEETS  = {"UsersDB"}
 USERS_SHEET    = "UsersDB"
 VISIBLE_SHEETS = ["Registration", "Salary Tax", "Annual Filing"]
