@@ -140,6 +140,11 @@ header{visibility:hidden!important;}
 [data-testid="stMetricValue"]{font-size:2.1rem!important;font-weight:800!important;color:var(--indigo-600)!important;}
 [data-testid="stMetricLabel"]{font-size:0.68rem!important;font-weight:700!important;color:var(--text-muted)!important;}
 .stButton>button{background:linear-gradient(135deg,var(--indigo-600) 0%,var(--blue-500) 100%)!important;color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;border:none!important;border-radius:var(--radius-md)!important;font-weight:700!important;font-size:0.84rem!important;padding:10px 20px!important;}
+.stButton>button:disabled {
+    background: #F1F5F9 !important;
+    color: #94A3B8 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
 div[data-testid="stForm"]{background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:var(--radius-lg)!important;padding:28px 32px!important;}
 .stTabs [data-baseweb="tab-list"]{gap:2px!important;background:var(--surface-2)!important;border:1px solid var(--border)!important;border-radius:var(--radius-full)!important;padding:4px!important;width:fit-content!important;box-shadow:var(--shadow-sm)!important;}
 .stTabs [data-baseweb="tab"]{background:transparent!important;color:var(--text-muted)!important;border-radius:var(--radius-full)!important;padding:8px 22px!important;font-weight:600!important;}
@@ -226,6 +231,15 @@ div[data-testid="stForm"]{background:var(--surface)!important;border:1px solid v
 div[data-baseweb="select"]>div,div[data-baseweb="popover"]>div,div[data-baseweb="menu"],ul[role="listbox"]{background-color:#FFFFFF!important;}
 div[data-baseweb="menu"] li,ul[role="listbox"] li,li[role="option"]{background-color:#FFFFFF!important;color:#0D1117!important;-webkit-text-fill-color:#0D1117!important;}
 div[data-baseweb="menu"] li:hover,ul[role="listbox"] li:hover{background-color:#EEF2FF!important;color:#4F46E5!important;-webkit-text-fill-color:#4F46E5!important;}
+/* ستایل بۆ ئەو دوگمانەی کە ناچالاکن (Disabled) */
+.stButton>button:disabled {
+    background: #E2E8F0 !important; /* ڕەنگی خۆڵەمێشی کاڵ */
+    color: #94A3B8 !important;      /* ڕەنگی نووسینی کاڵ */
+    border: 1px solid #CBD5E1 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    opacity: 0.6;
+}
 </style>
 """, unsafe_allow_html=True)
 
