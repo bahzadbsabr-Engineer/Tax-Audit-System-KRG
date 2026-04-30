@@ -2346,13 +2346,23 @@ def main():
         col_license=detect_column(headers,"license"); col_agent_email=detect_column(headers,"agent_email")
 
         if not df.empty:
-            # 🔴 دیزاینە نوێیەکە بۆ نیشاندانی کاتی ڕیفرێشبوونەوە
+            # 🔴 جیاکردنەوەی کاتەکە بۆ شێوەی دیجیتاڵی (HH:MM:SS)
+            time_only = fetched_at.split(" ")[1] if " " in fetched_at else fetched_at
+            
             st.markdown(f"""
+            <style>
+            @keyframes pulseIcon {{
+                0% {{ opacity: 1; transform: scale(1); }}
+                50% {{ opacity: 0.5; transform: scale(0.9); }}
+                100% {{ opacity: 1; transform: scale(1); }}
+            }}
+            </style>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:15px; margin-top:5px;">
                 <div class='section-title' style="margin:0;">{t('overview')}</div>
-                <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:6px 16px; border-radius:99px; font-size:0.75rem; font-weight:700; color:#475569; display:flex; align-items:center; gap:8px; box-shadow:var(--shadow-sm);">
-                    <span style="color:#10B981; font-size:10px;">🟢</span> 
-                    <span>دوایین ڕیفرێش: <span style="font-family:var(--mono); color:#0F172A; font-weight:800;">{fetched_at}</span></span>
+                <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:6px 14px; border-radius:99px; font-size:0.72rem; font-weight:700; color:#475569; display:flex; align-items:center; gap:8px; box-shadow:var(--shadow-sm);">
+                    <span style="font-size:15px; animation: pulseIcon 2s infinite;">⏱️</span> 
+                    <span style="text-transform: uppercase; letter-spacing: 0.05em; margin-top:2px;">Last Refresh:</span> 
+                    <span style="font-family:var(--mono); color:#4F46E5; font-weight:800; font-size:0.85rem; letter-spacing: 1px; background:#EEF2FF; padding:2px 8px; border-radius:6px; border:1px solid #C7D2FE;">{time_only}</span>
                 </div>
             </div>
             """, unsafe_allow_html=True)
