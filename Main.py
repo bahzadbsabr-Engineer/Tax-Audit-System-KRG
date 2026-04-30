@@ -69,7 +69,7 @@ VALID_ROLES  = ["auditor","manager","admin"]
 # Master list of grantable tabs
 ALL_TAB_OPTIONS = ["Worklist","Archive","Analytics","Raw Logs","Error Analytics","User Admin", "Project Admin"]
 
-READ_TTL=600; BACKOFF_MAX=20; _ROW_SEP=" \u007c "; _PAGE_SIZE=10; _COOKIE_NAME="portal_auth"
+READ_TTL=300; BACKOFF_MAX=15; _ROW_SEP=" \u007c "; _PAGE_SIZE=10; _COOKIE_NAME="portal_auth"
 _PT="plotly_white"; _PBG="#FFFFFF"; _PGR="#E4E7F0"; _PFC="#0D1117"; _NVY="#4F46E5"; _BLU="#60A5FA"
 
 # RangesDB constants
