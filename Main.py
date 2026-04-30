@@ -1793,6 +1793,11 @@ def _render_unified_permission_editor(staff: pd.DataFrame) -> None:
 
 
 def render_user_admin():
+    if st.button("🔄 Refresh Users Only"):
+    _fetch_users_cached.clear()  # تەنها میمۆری یوزەرەکان پاک دەکاتەوە
+    st.toast("داتای بەکارهێنەران نوێکرایەوە!", icon="✅")
+    time.sleep(0.5)
+    st.rerun()
     # ── Ensure all required columns exist (runs fast; idempotent) ────
     _ensure_recovery_email_col()
     _ensure_allowed_tabs_col()
