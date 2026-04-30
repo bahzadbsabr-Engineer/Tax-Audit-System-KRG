@@ -2346,12 +2346,20 @@ def main():
         col_license=detect_column(headers,"license"); col_agent_email=detect_column(headers,"agent_email")
 
         if not df.empty:
-            # گۆڕینی کاتەکە بۆ سیستەمی 12 سەعاتی و AM/PM
-            from datetime import datetime
+            # گۆڕینی کاتەکە بۆ سیستەمی 12 سەعاتی و AM/PM بەبێ دروستکردنی کێشە
             raw_time = fetched_at.split(" ")[1] if " " in fetched_at else fetched_at
-            time_only = datetime.strptime(raw_time, "%H:%M:%S").strftime("%I:%M:%S %p")
+            # لێرەدا تەنها ناوی datetime بەکاردەهێنین کە لە سەرەتای فایلەکەدا هەیە
+            time_obj = datetime.strptime(raw_time, "%H:%M:%S")
+            time_only = time_obj.strftime("%I:%M:%S %p")
             
             st.markdown(f"""
+            <style>
+            @keyframes pulseIcon {{
+                0% {{ opacity: 1; transform: scale(1); }}
+                50% {{ opacity: 0.5; transform: scale(0.9); }}
+                100% {{ opacity: 1; transform: scale(1); }}
+            }}
+            </style>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:15px; margin-top:5px;">
                 <div class='section-title' style="margin:0;">{t('overview')}</div>
                 <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:6px 14px; border-radius:99px; font-size:0.72rem; font-weight:700; color:#475569; display:flex; align-items:center; gap:8px; box-shadow:var(--shadow-sm);">
