@@ -2346,6 +2346,7 @@ def main():
         col_license=detect_column(headers,"license"); col_agent_email=detect_column(headers,"agent_email")
 
         if not df.empty:
+            # گۆڕینی کاتەکە بۆ سیستەمی 12 سەعاتی و AM/PM
             from datetime import datetime
             raw_time = fetched_at.split(" ")[1] if " " in fetched_at else fetched_at
             time_only = datetime.strptime(raw_time, "%H:%M:%S").strftime("%I:%M:%S %p")
