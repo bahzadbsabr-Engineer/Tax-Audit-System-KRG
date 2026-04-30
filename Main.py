@@ -1024,7 +1024,7 @@ def _render_review_summary(sheet_row,df_iloc,record,col_map,headers):
             ts_now=now_str(); auditor=st.session_state.user_email; log_prefix=f"[x] {auditor} | {ts_now}"
             auto_diff=build_auto_diff(record,new_vals)
             feedback_combined=(f"{manual_notes.strip()}\n{auto_diff}".strip() if manual_notes.strip() else auto_diff)
-            with st.spinner("Committing record to Google Sheets..."):
+            with st.spinner("Synchronizing record with central database... Please do not close this window."):
                 try:
                     is_success=write_approval_to_sheet(sid,ws_title,sheet_row,col_map,headers,new_vals,record,auditor,ts_now,log_prefix,eval_val=eval_val,feedback_val=feedback_combined)
                     if not is_success:
