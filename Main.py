@@ -631,6 +631,9 @@ def write_approval_to_sheet(sid, ws_title, sheet_row, col_map, headers, new_vals
     spr = _gsheets_call(gc.open_by_key, sid)
     ws = _gsheets_call(spr.worksheet, ws_title)
     
+    # 🔴 ئەمە ئەو دێڕەیە کە بیرمان چووبوو! پێویستە لێرە بێت بۆ دروستکردنی ستوونەکان 🔴
+    headers, col_map = ensure_system_cols_in_sheet(ws, headers, col_map)
+    
     # ئامادەکردنی مێژووی نووسین (Audit Log)
     old = str(record.get(COL_LOG, "")).strip()
     new_log = f"{log_prefix}\n{old}".strip()
@@ -659,7 +662,6 @@ def write_approval_to_sheet(sid, ws_title, sheet_row, col_map, headers, new_vals
     if batch:
         _gsheets_call(ws.batch_update, batch)
     return True
-
 def write_reopen_to_sheet(sid,ws_title,sheet_row,col_map):
     gc=get_gspread_client(); ws=gc.open_by_key(sid).worksheet(ws_title)
     if COL_STATUS in col_map: _gsheets_call(ws.update_cell,sheet_row,col_map[COL_STATUS],VAL_PENDING)
