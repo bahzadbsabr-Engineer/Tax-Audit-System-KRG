@@ -1793,16 +1793,6 @@ def _render_unified_permission_editor(staff: pd.DataFrame) -> None:
 
 
 def render_user_admin():
-    # 🔴 دوگمەی تایبەت بە ڕیفرێشی یوزەرەکان (تەنها بۆ ئەدمین)
-    col_a, col_b = st.columns([4, 1])
-    with col_b:
-        if st.session_state.user_role == "admin":
-            if st.button("🔄 Refresh Users", use_container_width=True, key="ref_users_btn"):
-                _fetch_users_cached.clear()
-                st.toast("لیستی بەکارهێنەران نوێکرایەوە!", icon="✅")
-                time.sleep(0.5)
-                st.rerun()
-                
     # ── Ensure all required columns exist (runs fast; idempotent) ────
     _ensure_recovery_email_col()
     _ensure_allowed_tabs_col()
@@ -1921,16 +1911,6 @@ def render_user_admin():
 
 # PROJECT ADMIN + BACKUP + CONFIGURE SHEET RANGES
 def render_project_admin() -> None:
-    # 🔴 دوگمەی تایبەت بە ڕیفرێشی پڕۆژەکان (تەنها بۆ ئەدمین)
-    col_p1, col_p2 = st.columns([4, 1])
-    with col_p2:
-        if st.session_state.user_role == "admin":
-            if st.button("🔄 Refresh Projects", use_container_width=True, key="ref_proj_btn"):
-                _fetch_projects_cached.clear()
-                _fetch_sheet_metadata.clear()
-                st.toast("لیستی پڕۆژەکان نوێکرایەوە!", icon="✅")
-                time.sleep(0.5)
-                st.rerun()
     st.markdown("""<div style="display:flex;align-items:center;gap:16px;margin-bottom:28px;padding-bottom:22px;border-bottom:1px solid var(--border);">
     <div style="width:46px;height:46px;border-radius:14px;flex-shrink:0;background:linear-gradient(135deg,#EEF2FF 0%,#E0E7FF 100%);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">⚙️</div>
     <div><div style="font-size:1.50rem;font-weight:800;color:var(--text-primary);line-height:1.1;">System & Project Settings</div>
@@ -2297,16 +2277,7 @@ def main():
                         _fetch_sheet_metadata.clear(); _fetch_ranges_cached.clear()
                         fetch_combined_analytics.clear()
                         st.session_state.local_cache_key=None; st.session_state.last_refresh_time=time.time()
-                    def _refresh_data_only():
-                        _fetch_raw_sheet_cached.clear()
-                        _fetch_projects_cached.clear()
-                        _fetch_sheet_metadata.clear()
-                        fetch_combined_analytics.clear()
-                        st.session_state.local_cache_key = None
-                        st.session_state.last_refresh_time = time.time()
-                        
-                    if can_refresh: 
-                        st.button("🔄 Refresh Page Data",key="top_refresh",use_container_width=True,on_click=_refresh_data_only)
+                    if can_refresh: st.button("🔄 Refresh Data",key="top_refresh",use_container_width=True,on_click=_do_refresh)
                     else: st.button(f"⏳ Wait {max(1,int((COOLDOWN-time_passed)/60))} min",key="top_refresh_disabled",disabled=True,use_container_width=True)
                 with st.expander(f"🔒 {t('update_pw')}",expanded=False):
                     with st.form("top_pw_form"):
