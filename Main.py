@@ -625,19 +625,39 @@ def ensure_system_cols_in_sheet(ws,headers,col_map):
             _gsheets_call(ws.update_cell,1,np_,sc); headers.append(sc); col_map[sc]=np_
     return headers,col_map
 
-def write_approval_to_sheet(sid,ws_title,sheet_row,col_map,headers,new_vals,record,auditor,ts_now,log_prefix,eval_val="",feedback_val=""):
-    gc=get_gspread_client(); ws=gc.open_by_key(sid).worksheet(ws_title)
-    headers,col_map=ensure_system_cols_in_sheet(ws,headers,col_map)
-    old=str(record.get(COL_LOG,"")).strip()
-    new_log=f"{log_prefix}\n{old}".strip()
-    if len(new_log)>49000: new_log=new_log[:48900]+"\n... [TRUNCATED]"
-    batch=[]
-    for f,v in new_vals.items():
-        if f in col_map and clean_cell(record.get(f,""))!=v:
-            batch.append({"range":rowcol_to_a1(sheet_row,col_map[f]),"values":[[v]]})
-    for cn,v in [(COL_STATUS,VAL_DONE),(COL_AUDITOR,auditor),(COL_DATE,ts_now),(COL_LOG,new_log),(COL_EVAL,eval_val),(COL_FEEDBACK,feedback_val)]:
-        if cn in col_map: batch.append({"range":rowcol_to_a1(sheet_row,col_map[cn]),"values":[[v]]})
-    if batch: _gsheets_call(ws.batch_update,batch)
+def write_approval_to_sheet(sid, ws_title, sheet_row, col_map, headers, new_vals, record, auditor, ts_now, log_prefix, eval_val="", feedback_val=""):
+    # یەکجار پەیوەندی بە گوگڵەوە دەکەین بۆ کردنەوەی فایلەکە
+    gc = get_gspread_client()
+    spr = _gsheets_call(gc.open_by_key, sid)
+    ws = _gsheets_call(spr.worksheet, ws_title)
+    
+    # ئامادەکردنی مێژووی نووسین (Audit Log)
+    old = str(record.get(COL_LOG, "")).strip()
+    new_log = f"{log_prefix}\n{old}".strip()
+    if len(new_log) > 49000: new_log = new_log[:48900] + "\n... [TRUNCATED]"
+    
+    # کۆکردنەوەی هەموو گۆڕانکارییەکان لە یەک لیستدا (Batch Update)
+    batch = []
+    
+    # گۆڕانکارییەکانی ناو کێڵگەکان (Fields)
+    for f, v in new_vals.items():
+        if f in col_map and clean_cell(record.get(f, "")) != v:
+            batch.append({"range": rowcol_to_a1(sheet_row, col_map[f]), "values": [[v]]})
+            
+    # گۆڕانکاری ستوونە بنەڕەتییەکان (Status, Auditor, Date, Eval, Feedback)
+    sys_updates = [
+        (COL_STATUS, VAL_DONE), (COL_AUDITOR, auditor), 
+        (COL_DATE, ts_now), (COL_LOG, new_log), 
+        (COL_EVAL, eval_val), (COL_FEEDBACK, feedback_val)
+    ]
+    
+    for cn, v in sys_updates:
+        if cn in col_map:
+            batch.append({"range": rowcol_to_a1(sheet_row, col_map[cn]), "values": [[v]]})
+    
+    # ناردنی هەموو گۆڕانکارییەکان بەیەکەوە لە یەک چرکەدا
+    if batch:
+        _gsheets_call(ws.batch_update, batch)
     return True
 
 def write_reopen_to_sheet(sid,ws_title,sheet_row,col_map):
