@@ -628,10 +628,6 @@ def ensure_system_cols_in_sheet(ws,headers,col_map):
 def write_approval_to_sheet(sid,ws_title,sheet_row,col_map,headers,new_vals,record,auditor,ts_now,log_prefix,eval_val="",feedback_val=""):
     gc=get_gspread_client(); ws=gc.open_by_key(sid).worksheet(ws_title)
     headers,col_map=ensure_system_cols_in_sheet(ws,headers,col_map)
-    if COL_STATUS in col_map:
-        status_a1=rowcol_to_a1(sheet_row,col_map[COL_STATUS])
-        live_status=_gsheets_call(ws.acell,status_a1).value
-        if live_status==VAL_DONE: return False
     old=str(record.get(COL_LOG,"")).strip()
     new_log=f"{log_prefix}\n{old}".strip()
     if len(new_log)>49000: new_log=new_log[:48900]+"\n... [TRUNCATED]"
