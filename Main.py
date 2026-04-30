@@ -2346,7 +2346,17 @@ def main():
         col_license=detect_column(headers,"license"); col_agent_email=detect_column(headers,"agent_email")
 
         if not df.empty:
-            st.markdown(f"<div class='section-title'>{t('overview')}</div>",unsafe_allow_html=True)
+            # 🔴 دیزاینە نوێیەکە بۆ نیشاندانی کاتی ڕیفرێشبوونەوە
+            st.markdown(f"""
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:15px; margin-top:5px;">
+                <div class='section-title' style="margin:0;">{t('overview')}</div>
+                <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:6px 16px; border-radius:99px; font-size:0.75rem; font-weight:700; color:#475569; display:flex; align-items:center; gap:8px; box-shadow:var(--shadow-sm);">
+                    <span style="color:#10B981; font-size:10px;">🟢</span> 
+                    <span>دوایین ڕیفرێش: <span style="font-family:var(--mono); color:#0F172A; font-weight:800;">{fetched_at}</span></span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
             total_n=len(df); done_n=int((df[COL_STATUS]==VAL_DONE).sum()); pending_n=total_n-done_n
             pct=done_n/total_n if total_n else 0
             m1,m2,m3=st.columns(3)
